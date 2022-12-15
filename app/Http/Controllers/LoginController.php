@@ -32,6 +32,8 @@ class LoginController extends Controller{
         $credentials = $request->only('email', 'password');
 
         if(auth()->attempt($credentials)){
+            if(auth()->user()->role == 'admin')
+                return redirect('/admin');
             return redirect('/arena');
         }
 

@@ -34,8 +34,6 @@ class VerifyEmailController extends Controller{
     public function resendotp(){
 
         $email = auth()->user()->email;
-        if($email == null)
-            $email = $request->email;
         if ($email == null)
             return redirect('/index');
         $otp = rand(100000, 999999);

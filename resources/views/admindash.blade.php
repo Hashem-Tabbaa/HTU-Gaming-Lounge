@@ -12,10 +12,12 @@
         @foreach($reservations as $reservation)
                 <tr>
                     <td>
-                        {{$reservation->student1_email}}
-                        {{$reservation->student2_email}}
-                        {{$reservation->student3_email}}
-                        {{$reservation->student4_email}}
+                        <li>
+                            <ul>{{$reservation->student1_email}}</ul>
+                            <ul>{{$reservation->student2_email}}</ul>
+                            <ul>{{$reservation->student3_email}}</ul>
+                            <ul>{{$reservation->student4_email}}</ul>
+                        </li>
                     </td>
                     <td>{{$reservation->game_name}}</td>
                     <td>{{$reservation->res_time}}</td>

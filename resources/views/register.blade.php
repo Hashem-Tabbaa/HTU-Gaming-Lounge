@@ -17,7 +17,7 @@
 
                   <div class="d-flex justify-content-around">
                     <div class="wrap-input100 validate-input" style="width: fit-content">
-                        <label class="m-auto" data-placeholder="First Name">Firat Name</label>
+                        <label class="m-auto" data-placeholder="First Name">First Name</label>
                         <input required class="input100" type="text" name="fname">
                     </div>
 

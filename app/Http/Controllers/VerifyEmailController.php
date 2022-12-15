@@ -31,7 +31,7 @@ class VerifyEmailController extends Controller{
         return redirect('/verifyemail')->withErrors('Wrong code, please try again')->withInput();
     }
 
-    public function resendotp($request){
+    public function resendotp(){
 
         $email = auth()->user()->email;
         if($email == null)

@@ -13,9 +13,14 @@ class AdminController extends Controller{
         if(Gate::denies('admin'))
             return redirect('/');
 
-        $reservations = Reservation::all();
+        //sort reservations by date ascending
+        $reservations = Reservation::orderBy('res_time', 'asc')->get();
+
         // return $resrevations;
-        return view('admindash', ['reservations' => $reservations]);
+        return view('admin.admindash', ['reservations' => $reservations]);
     }
 
+    public function removeReservation($request){
+        return "hello";
+    }
 }

@@ -57,6 +57,19 @@ body .container .card .box {
     overflow: hidden;
     transition: 0.5s;
 }
+body .container .card .box-admin {
+    margin: 15px auto 0;
+    /* background: #2a2b2f; */
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: 0.5s;
+}
+body .container .card .box-admin .content {
+    text-align: center;
+}
 
 body .container .card .box:hover {
     transform: translateY(-50px);

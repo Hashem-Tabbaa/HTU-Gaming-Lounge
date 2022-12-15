@@ -16,12 +16,15 @@ class ReservationController extends Controller{
         if (Gate::allows('notverified'))
             return redirect('/verifyemail');
 
-        if (Gate::denies('user'))
+        if (Gate::denies('user') && Gate::denies('admin'))
             return redirect('/login');
 
 
         $game = Game::where('name', $game_name)->first();
         $timeSlots = $this->generateTimeSlots($game);
+        if($timeSlots == null)
+            return redirect('/arena')->withErrors('No time slots available for this game today');
+
         return view('reservation', ['game' => $game, 'timeSlots' => $timeSlots]);
     }
     public function reserve(){

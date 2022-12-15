@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
 
 class ForgotPasswordController extends Controller{
 
@@ -41,9 +42,18 @@ class ForgotPasswordController extends Controller{
             } catch (\Exception $e) {
                 return redirect('/forgotpassword')->withErrors('Something went wrong, please try again later')->withInput();
             }
-            return redirect('/verifyotp')->with('success', 'A verification code has been sent to your email, please enter it below');
+            return redirect('/verifyforgotpassword')->with('success', 'A verification code has been sent to your email, please enter it below');
         }
         return redirect('/forgotpassword')->withErrors('Email not found, please try again')->withInput();
+    }
+
+    public function verifyPage($request){
+        if( Gate::allows('user') || Gate::allows('admin') || Gate::allows('notverified') ){
+            return redirect('/index');
+        }
+        $email = $request->email;
+        Session::put('forgotpassword', $email);
+        return view('verifyforgotpassword');
     }
 
     public function verifyotp(Request $request)

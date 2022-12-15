@@ -36,7 +36,14 @@ Route::post('/verifyemail', 'VerifyEmailController@verify');
 
 Route::get('/resendotp', 'VerifyEmailController@resendotp');
 
-Route::get('/forgotpassword', 'ForgotPasswordController@index');
-Route::post('/sendotp', 'ForgotPasswordController@sendotp');
+Route::get('/forgotpassword/', 'ForgotPasswordController@index');
+Route::get('/forgotpassword/verify', 'ForgotPasswordController@verifyPage');
+Route::post('/forgotpassword/verify', 'ForgotPasswordController@verifyotp');
+Route::post('/forgotpassword/sendotp', 'ForgotPasswordController@sendotp');
 
-Route::get('/admin', 'AdminController@index');
+
+
+Route::get('/admin/', 'AdminController@index');
+Route::post('/admin/removeReservation', 'AdminController@removeReservation');
+Route::get('/admin/settings', 'SettingsController@index');
+Route::post('/admin/settings/update', 'SettingsController@update');

@@ -5,7 +5,7 @@
     <img src="./images/HTU Logo-250px.png" class="main-img">
 </span>
 
-<div class="container d-flex">
+<div class="container d-flex student">
 
     @foreach ($games as $game)
         <?php
@@ -22,7 +22,17 @@
             </div>
         </div>
     @endforeach
-
+    @if ($errors->any())
+          <script>
+            Swal.fire({
+              icon: "error",
+              title: "Reservation Failed",
+              text: "There is no available slot for this game.",
+              showConfirmButton: true,
+              confirmButtonText: "OK",
+            });
+          </script>
+      @endif
 </div>
 
 @endsection

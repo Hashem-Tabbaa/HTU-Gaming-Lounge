@@ -19,12 +19,11 @@ class VerifyEmailController extends Controller{
         if(Gate::denies('notverified'))
             return redirect('/arena');
 
-        $user = User::where('otp', $request->otp)->first();
-        if($user){
+        $user = auth()->user();
+        if($user->otp == $request->otp){
             $user->otp = null;
             $user->email_verified_at = now();
             $user->verified = 1;
-            $user->save();
             auth()->login($user);
             return redirect('/arena');
         }

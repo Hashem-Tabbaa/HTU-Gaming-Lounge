@@ -10,7 +10,7 @@
             <span class="login100-form-title mb-5">
                 HTU Gaming Lounge
             </span>
-            <form class="login100-form validate-form" method="post" action="/sendotp">
+            <form class="login100-form validate-form" method="post" action="/forgotpassword/verify">
                 @csrf
                 <div class="d-flex flex-wrap">
                     <div class="wrap-input100 validate-input m-auto" data-validate = "Valid email is: a@b.c">
@@ -40,14 +40,6 @@
                     </span>
                     <a class="txt3 link-danger" href="/register" style="font-size: 1.1em">
                         Sign up
-                    </a>
-                </div>
-                <div class="text-center">
-                    <span class="txt4">
-                        Forgot your password?
-                    </span>
-                    <a class="txt3 link-danger" href="/forgotpassword" style="font-size: 1.1em">
-                        Reset password
                     </a>
                 </div>
             </form>

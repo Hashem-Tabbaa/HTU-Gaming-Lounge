@@ -38,3 +38,5 @@ Route::get('/resendotp', 'VerifyEmailController@resendotp');
 
 Route::get('/forgotpassword', 'ForgotPasswordController@index');
 Route::post('/sendotp', 'ForgotPasswordController@sendotp');
+
+Route::get('/admin', 'AdminController@index');

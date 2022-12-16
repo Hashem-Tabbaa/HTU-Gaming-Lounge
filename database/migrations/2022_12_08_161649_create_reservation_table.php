@@ -18,6 +18,7 @@ class CreateReservationTable extends Migration
             $table->string('game_name');
             $table->time('res_time');
             $table->time('res_end_time');
+            $table->integer('session_duration');
             $table->string('student1_email');
             $table->string('student2_email')->nullable();
             $table->string('student3_email')->nullable();

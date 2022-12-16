@@ -46,7 +46,7 @@
                     </div>
                     <div class="wrap-input100 validate-input" data-validate="Enter password">
                         <label class="" data-placeholder="Confirm Password">Confirm Password</label>
-                        <input required class="input100" type="password" name="confirm_password">
+                        <input required class="input100" type="password" name="confirmpassword">
                     </div>
                 </div>
 

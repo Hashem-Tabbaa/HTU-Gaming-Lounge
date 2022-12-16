@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\reservation;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
-use PhpParser\Node\Scalar\MagicConst\Line;
+use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
 
 class ReservationController extends Controller{
 
@@ -23,7 +22,8 @@ class ReservationController extends Controller{
         $game = Game::where('name', $game_name)->first();
         $timeSlots = $this->generateTimeSlots($game);
         if($timeSlots == null)
-            return redirect('/arena')->withErrors('No time slots available for this game today');
+            return back()->withErrors('There is no available slot for this game.');
+            // return redirect('/arena')->withErrors('No time slots available for this game today');
 
         return view('reservation', ['game' => $game, 'timeSlots' => $timeSlots]);
     }
@@ -43,12 +43,17 @@ class ReservationController extends Controller{
                 array_push($emails, request('email'.$i));
         }
 
+        $users = User::whereIn('email', $emails)->where('verified', 1)->where('is_banned', 0)->get();
+        if($users->count() != count($emails))
+            return redirect('/reservation/'.$game)->with('error', 'One of the players is not registered or not verified');
+
         // Check if the time slot is already reserved
         $reservations = Reservation::where('game_name', $game)->where('res_time', $time_slot)->count();
         $sessions_capacity = Game::where('name', $game)->first()->sessions_capacity;
         $session_duration = Game::where('name', $game)->first()->session_duration;
+
         if($reservations == $sessions_capacity)
-            return redirect('/reservation/'.$game)->with('error', 'Time slot already reserved');
+            return redirect('/reservation/'.$game)->with('error', 'The selected time slot is already reserved');
         // Check if the user has already reserved a time slot for this game
         $reservation = Reservation::
         whereIn('student1_email', $emails)->
@@ -65,6 +70,7 @@ class ReservationController extends Controller{
         $reservation->game_name = $game;
         $reservation->res_time = $time_slot;
         $reservation->res_end_time = Date("H:i:s", strtotime($time_slot) + 60 * $session_duration);
+        $reservation->session_duration = $session_duration;
         foreach ($emails as $key => $email){
             $reservation->{'student'.($key+1).'_email'} = $email;
         }

@@ -27,7 +27,7 @@
             Swal.fire({
               icon: "error",
               title: "Reservation Failed",
-              text: "There is no available slot for this game.",
+              text: "{{$errors->first()}}",
               showConfirmButton: true,
               confirmButtonText: "OK",
             });

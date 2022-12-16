@@ -20,7 +20,10 @@ class AdminController extends Controller{
         return view('admin.admindash', ['reservations' => $reservations]);
     }
 
-    public function removeReservation($request){
-        return "hello";
+    public function removeReservation(Request $request){
+        $reservation_id = $request->id;
+        $reservation = Reservation::find($reservation_id);
+        $reservation->delete();
+        return $request->id;
     }
 }

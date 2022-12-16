@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,10 +68,17 @@
                                 </div>
                             </div>
                         @else
-                            <a class="logout-btn" style="margin-right: 10px" href="/profile">
-                                <i class="fa fa-user" aria-hidden="true"></i>
+                        <div class="dropdown">
+                            <button class="logout-btn" style="margin-right: 10px" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
                                 {{ Auth::user()->fname }}
-                            </a>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: fit-content;">
+                                <a class="dropdown-item" href="/changepassword/">Change Password</a>
+                                <a class="dropdown-item" href="/myreservations/">My Reservations</a>
+                            </div>
+                        </div>
                         @endif
                         <a class="logout-btn" href="/logout">Log Out </a>
                     </div>

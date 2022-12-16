@@ -35,7 +35,7 @@
         </thead>
         <tbody>
             @foreach ($reservations as $reservation)
-                <tr class="record visible {{ $reservation->game_name }}" id="{{ $reservation->game_name }}">
+                <tr class="record okGame okTime {{ $reservation->game_name }}" id="res{{ $reservation->id }}">
                     <td>
                         <li>
                             <ul>{{ $reservation->student1_email }}</ul>
@@ -48,7 +48,7 @@
                     <td>{{ $reservation->res_time }}</td>
                     <td>{{ $reservation->res_end_time }}</td>
                     <td class="text-center">
-                        <form action="/admin/removeReservation" method="POST">
+                        <form action="/admin/removeReservation" method="POST" class="form">
                             @csrf
                             <input type="number " name="id" value="{{ $reservation->id }}" hidden>
                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -57,67 +57,96 @@
                 </tr>
             @endforeach
             <script>
+                $(document).ready(function() {
+                    $('.form').submit(function(e) {
+                        e.preventDefault();
+                        var form = $(this);
+                        $.ajax({
+                            type: form.attr('method'),
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(data) {
+                                var id = data;
+                                var row = document.querySelector('#res' + id);
+                                console.log(row);
+                                row.hidden = true;
+                            }
+                        })
+                    })
+                })
                 document.querySelector('#game').addEventListener('change', function(e) {
                     var game = e.target.value;
                     var rows = document.querySelectorAll('.record');
                     if (game == 'All') {
                         for (var i = 0; i < rows.length; i++) {
-                            rows[i].style.display = 'table-row';
-                            rows[i].classList.add('visible');
+                            rows[i].classList.add('okGame');
+                            if (rows[i].classList.contains('okTime'))
+                                rows[i].style.display = 'table-row';
                         }
                         return;
                     }
                     for (var i = 0; i < rows.length; i++) {
                         if (rows[i].classList.contains(game)) {
-                            rows[i].style.display = 'table-row';
-                            rows[i].classList.add('visible');
+                            rows[i].classList.add('okGame');
+                            if (rows[i].classList.contains('okTime'))
+                                rows[i].style.display = 'table-row';
                         } else {
+                            rows[i].classList.remove('okGame');
                             rows[i].style.display = 'none';
-                            rows[i].classList.remove('visible');
                         }
                     }
                 });
                 document.querySelector('#time').addEventListener('change', function(e) {
                     var time = e.target.value;
-                    var rows = document.querySelectorAll('.record.visible');
+                    var rows = document.querySelectorAll('.record');
                     if (time == 'All') {
                         for (var i = 0; i < rows.length; i++) {
-                            rows[i].style.display = 'table-row';
+                            rows[i].classList.add('okTime');
+                            if (rows[i].classList.contains('okGame'))
+                                rows[i].style.display = 'table-row';
                         }
                         return;
                     }
                     if (time == 'Upcoming') {
-                        var nowTime = (new Date()).toLocaleTimeString()
-                        if(nowTime[0] != '1')
-                            nowTime = '0' + nowTime;
+                        var now = (new Date()).toLocaleTimeString('en-US', {
+                            hour12: false,
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit"
+                        });
 
-                        nowTime = nowTime.slice(0, 8);
-
-                        for(var i = 0; i < rows.length; i++){
+                        for (var i = 0; i < rows.length; i++) {
                             var starts = rows[i].children[2].innerHTML;
                             var ends = rows[i].children[3].innerHTML;
 
-                            if(starts > nowTime){
-                                rows[i].style.display = 'table-row';
-                            }else{
+                            if (starts > now) {
+                                rows[i].classList.add('okTime');
+                                if (rows[i].classList.contains('okGame'))
+                                    rows[i].style.display = 'table-row';
+                            } else {
+                                rows[i].classList.remove('okTime');
                                 rows[i].style.display = 'none';
                             }
                         }
                     }
                     if (time == 'Running') {
-                        var nowTime = (new Date()).toLocaleTimeString()
-                        if(nowTime[0] != '1')
-                            nowTime = '0' + nowTime;
+                        var now = (new Date()).toLocaleTimeString('en-US', {
+                            hour12: false,
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit"
+                        });
 
-                        nowTime = nowTime.slice(0, 8);
-
-                        for(var i = 0; i < rows.length; i++){
+                        for (var i = 0; i < rows.length; i++) {
                             var starts = rows[i].children[2].innerHTML;
                             var ends = rows[i].children[3].innerHTML;
 
-                            if(starts <= nowTime && nowTime <= ends){
-                                rows[i].style.display = 'table-row';
-                            }else{
+                            if (starts <= now && now <= ends) {
+                                rows[i].classList.add('okTime');
+                                if (rows[i].classList.contains('okGame'))
+                                    rows[i].style.display = 'table-row';
+                            } else {
+                                rows[i].classList.remove('okTime');
                                 rows[i].style.display = 'none';
                             }
                         }

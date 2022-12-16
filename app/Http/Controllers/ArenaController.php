@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 class ArenaController extends Controller{
 
     public function index(){
-        $games = Game::select('id', 'name')->get();
+        $games = Game::all();
         return view('arena', ['games' => $games]);
     }
 

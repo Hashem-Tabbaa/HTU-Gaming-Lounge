@@ -42,11 +42,8 @@ class VerifyEmailController extends Controller{
         User::where('email', $email)->update(['otp' => $otp]);
 
         try{
-            Mail::send('email', ['otp' => $otp, 'fname' => $fname, 'lname' => $lname],
-                function($message) use ($email) {
-                    $message->to($email, 'HTU Arena')->subject('HTU Arena - Verify your email');
-                    $message->from('htugaminglounge@gmail.com','HTU Arena');
-                });
+            Mail::to($email)->
+                send(new \App\Mail\VerificationEmail($otp, $fname, $lname));
         }catch(\Exception $e){
             return redirect('/verifyemail')->withError('Something went wrong, please try again later')->withInput();
         }

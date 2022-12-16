@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Game;
+use App\Models\Reservation;
 
 class SettingsController extends Controller{
 
@@ -27,6 +28,7 @@ class SettingsController extends Controller{
                                                     , 'session_duration' => $request->input('session_duration')
                                                     , 'sessions_capacity' => $request->input('sessions_capacity')
                                                 ]);
+        Reservation::where('game_name', $game_name)->delete();
         // return the ajax response
         return $request->input('name');
     }

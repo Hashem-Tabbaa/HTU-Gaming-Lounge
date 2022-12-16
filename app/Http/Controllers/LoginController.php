@@ -14,6 +14,9 @@ class LoginController extends Controller{
         if( Gate::allows('user') || Gate::allows('admin'))
             return redirect('/arena');
 
+        if(Gate::allows('notverified'))
+            return redirect('/verifyemail');
+
         return view('login');
     }
 
@@ -21,6 +24,9 @@ class LoginController extends Controller{
 
         if( Gate::allows('user') || Gate::allows('admin'))
             return redirect('/arena');
+
+        if(Gate::allows('notverified'))
+            return redirect('/verifyemail');
 
         $validator = $this->validator($request->all());
         if ($validator->fails()) {
@@ -37,7 +43,7 @@ class LoginController extends Controller{
             return redirect('/arena');
         }
 
-        return redirect('/login')->withErrors('Incorrect Password')->withInput();
+        return redirect('/login')->withErrors('Invalid email or password')->withInput();
     }
     public function logout(){
         auth()->logout();
@@ -48,7 +54,7 @@ class LoginController extends Controller{
 
         $messages = [
             'email.required' => 'Email is required',
-            'email.email' => 'Unregistered email',
+            'email.email' => 'Invalid email',
             'password.required' => 'Password is required',
         ];
         return Validator::make($data, [

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,3 +48,16 @@ Route::get('/admin/', 'AdminController@index');
 Route::post('/admin/removeReservation', 'AdminController@removeReservation');
 Route::get('/admin/settings', 'SettingsController@index');
 Route::post('/admin/settings/update', 'SettingsController@update');
+
+Route::get('/changepassword', 'ChangePasswordController@index');
+Route::post('/changepassword', 'ChangePasswordController@changePassword');
+
+Route::get('/myreservations', 'MyReservationsController@index');
+Route::post('/myreservations/cancel', 'MyReservationsController@cancel');
+
+Route::get('/artisan', function () {
+    Artisan::call('migrate', [
+        '--force' => true,
+    ]);
+    Artisan::call('optimize');
+});

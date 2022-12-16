@@ -15,6 +15,9 @@ class RegisterController extends Controller{
         if( Gate::allows('user') ||Gate::allows('admin'))
             return redirect('/arena');
 
+        if(Gate::allows('notverified'))
+            return redirect('/verifyemail');
+
         return view('register');
     }
 
@@ -22,6 +25,9 @@ class RegisterController extends Controller{
 
         if( Gate::allows('user') || Gate::allows('admin'))
             return redirect('/arena');
+
+        if(Gate::allows('notverified'))
+            return redirect('/verifyemail');
 
         $validator = $this->validator($request->all());
         if ($validator->fails()) {
@@ -33,11 +39,8 @@ class RegisterController extends Controller{
         $otp = rand(100000, 999999);
 
         try{
-            Mail::send('email', ['otp' => $otp, 'fname' => $request->fname, 'lname' => $request->lname],
-                    function($message) use ($request) {
-                        $message->to($request->email, 'HTU Arena')->subject('HTU Arena - Verify your email');
-                        $message->from('htugaminglounge@gmail.com','HTU Arena');
-            });
+            Mail::to($request->email)->
+                send(new \App\Mail\VerificationEmail($otp, $request->fname, $request->lname));
         }catch(\Exception $e){
             return redirect('/register')->withError('Something went wrong, please try again later')->withInput();
         }
@@ -64,7 +67,6 @@ class RegisterController extends Controller{
     protected function validator($data){
         $messages = [
             'uni_id.required' => 'The university ID is required',
-            'uni_id.unique' => 'The university ID is already taken',
             'fname.required' => 'The first name is required',
             'lname.required' => 'The last name is required',
             'email.required' => 'The email is required',
@@ -74,6 +76,8 @@ class RegisterController extends Controller{
             'password.min' => 'The password must be at least 8 characters',
             'password.max' => 'The password must be at most 20 characters',
             'email.regex' => 'The email must be valid HTU email',
+            'confirmpassword.required' => 'The confirm password is required',
+            'confirmpassword.same' => 'The confirm password must be the same as the password',
         ];
 
         $regex = '/^[a-zA-Z0-9._-]+@htu.edu.jo$/';
@@ -83,6 +87,7 @@ class RegisterController extends Controller{
             'lname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:'.$regex],
             'password' => ['required', 'string', 'min:8', 'max:20'],
+            'confirmpassword' => ['required', 'same:password'],
         ], $messages);
     }
 }

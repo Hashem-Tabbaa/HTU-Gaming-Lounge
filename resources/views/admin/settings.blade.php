@@ -70,6 +70,7 @@
                     url: url,
                     data: data,
                     success: function(response) {
+                        console.log(response);
                         document.getElementById('success_' + response).hidden = false;
                         setTimeout(function() {
                             document.getElementById('success_' + response).hidden = true;

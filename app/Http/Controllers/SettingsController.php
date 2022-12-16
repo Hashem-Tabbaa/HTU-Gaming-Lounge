@@ -24,7 +24,9 @@ class SettingsController extends Controller{
         $game_name = $request->input('name');
         Game::where('name', $game_name)->update(['start_time' => $request->input('start_time')
                                                     ,'end_time' => $request->input('end_time')
-                                                    , 'session_duration' => $request->input('session_duration')]);
+                                                    , 'session_duration' => $request->input('session_duration')
+                                                    , 'sessions_capacity' => $request->input('sessions_capacity')
+                                                ]);
         // return the ajax response
         return $request->input('name');
     }

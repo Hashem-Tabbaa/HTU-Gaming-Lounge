@@ -31,7 +31,7 @@ class ReservationController extends Controller{
 
         if (Gate::allows('notverified'))
             return redirect('/verifyemail');
-        if(Gate::denies('user'))
+        if(Gate::denies('user') && Gate::denies('admin'))
             return redirect('/login');
 
         $time_slot = Date("H:i:s", strtotime(request('time_slot')));
@@ -44,8 +44,10 @@ class ReservationController extends Controller{
         }
 
         // Check if the time slot is already reserved
-        $reservation = Reservation::where('game_name', $game)->where('res_time', $time_slot)->first();
-        if($reservation != null)
+        $reservations = Reservation::where('game_name', $game)->where('res_time', $time_slot)->count();
+        $sessions_capacity = Game::where('name', $game)->first()->sessions_capacity;
+        $session_duration = Game::where('name', $game)->first()->session_duration;
+        if($reservations == $sessions_capacity)
             return redirect('/reservation/'.$game)->with('error', 'Time slot already reserved');
         // Check if the user has already reserved a time slot for this game
         $reservation = Reservation::
@@ -62,6 +64,7 @@ class ReservationController extends Controller{
         $reservation = new Reservation();
         $reservation->game_name = $game;
         $reservation->res_time = $time_slot;
+        $reservation->res_end_time = Date("H:i:s", strtotime($time_slot) + 60 * $session_duration);
         foreach ($emails as $key => $email){
             $reservation->{'student'.($key+1).'_email'} = $email;
         }
@@ -74,23 +77,29 @@ class ReservationController extends Controller{
         $start = strtotime($game->start_time);
         $end = strtotime($game->end_time);
         $session_duration = $game->session_duration;
+        $sessions_capacity = $game->sessions_capacity;
 
         // Generate time slots
         $timeSlots = [];
+        $timeSlotsFreq = [];
         $curr = $start;
         while($curr < $end){
             $timeSlots[] = Date("H:i", $curr);
+            $timeSlotsFreq[Date("H:i", $curr)] = $sessions_capacity;
             $curr += 60 * $session_duration;
         }
-
         // Remove reserved time slots
         $reservations = Reservation::where('game_name', $game->name)->get();
 
         foreach($reservations as $reservation){
             $time = Date("H:i", strtotime($reservation->res_time));
-            $key = array_search($time, $timeSlots);
-            if($key !== false)
-                unset($timeSlots[$key]);
+            $timeSlotsFreq[$time]--;
+        }
+        foreach($timeSlotsFreq as $key => $value){
+            if($value <= 0){
+                $arrayKey = array_search($key, $timeSlots);
+                unset($timeSlots[$arrayKey]);
+            }
         }
 
         return $timeSlots;

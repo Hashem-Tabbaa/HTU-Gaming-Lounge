@@ -24,6 +24,7 @@ class VerifyEmailController extends Controller{
             $user->otp = null;
             $user->email_verified_at = now();
             $user->verified = 1;
+            User::where('email', $user->email)->update(['otp' => null, 'email_verified_at' => now(), 'verified' => 1]);
             auth()->login($user);
             return redirect('/arena');
         }

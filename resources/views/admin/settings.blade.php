@@ -41,6 +41,11 @@
                                         <input type="number" name="session_duration" id="session_duration"
                                             value="{{ $game->session_duration }}" style="width: 50px" min="5">
                                     </div>
+                                    <div>
+                                        <label for="sessions_capacity">Sessions Capacity: </label>
+                                        <input type="number" name="sessions_capacity" id="sessions_capacity"
+                                            value="{{ $game->sessions_capacity }}" style="width: 50px" min="0">
+                                    </div>
                                     <p class="text-success" id="success_{{ $game->name }}" hidden>Settings saved successfully</p>
                                     <button type="submit" class="btn btn-primary mt-3">Save</button>
                                 </form>
@@ -68,7 +73,7 @@
                         document.getElementById('success_' + response).hidden = false;
                         setTimeout(function() {
                             document.getElementById('success_' + response).hidden = true;
-                        }, 4000);
+                        }, 2000);
                     }
                 });
             });

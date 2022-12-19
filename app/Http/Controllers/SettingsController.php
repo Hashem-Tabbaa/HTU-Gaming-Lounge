@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Game;
 use App\Models\Reservation;
+use App\Models\User;
+use Exception;
 
 class SettingsController extends Controller{
 
@@ -14,8 +16,9 @@ class SettingsController extends Controller{
             return redirect('/');
 
         $games = Game::all();
+        $users = User::where('is_banned', "1")->get();
 
-        return view('admin.settings', ['games' => $games]);
+        return view('admin.settings', ['games' => $games, 'users' => $users]);
     }
 
     public function update(Request $request){
@@ -31,5 +34,28 @@ class SettingsController extends Controller{
         Reservation::where('game_name', $game_name)->delete();
         // return the ajax response
         return $request->input('name');
+    }
+    public function unban(Request $request){
+        if (Gate::denies('admin'))
+            return redirect('/');
+
+        $email = $request->input('email');
+        User::where('email', $email)->update(['is_banned' => '0']);
+
+        // return the ajax response
+        return $email;
+    }
+    public function ban(Request $request){
+        if (Gate::denies('admin'))
+            return redirect('/');
+
+        $email = $request->input('email');
+
+        try{
+            User::where('email', $email)->update(['is_banned' => '1']);
+        }catch(Exception $e){
+            return "User not found";
+        }
+        return redirect('/admin/settings');
     }
 }

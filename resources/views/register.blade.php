@@ -28,7 +28,8 @@
                         </div>
 
                         <div class="d-flex justify-content-around">
-                            <div class="wrap-input100 validate-input" style="margin-right:10px;" data-validate="Valid email is: a@htu.edu.jo">
+                            <div class="wrap-input100 validate-input" style="margin-right:10px;"
+                                data-validate="Valid email is: a@htu.edu.jo">
                                 <label class="" data-placeholder="Email">Email</label>
                                 <input required class="input100" type="text" name="email">
                             </div>
@@ -39,7 +40,8 @@
                         </div>
 
                         <div class="d-flex justify-content-around">
-                            <div class="wrap-input100 validate-input" style="margin-right:10px;" data-validate="Enter password">
+                            <div class="wrap-input100 validate-input" style="margin-right:10px;"
+                                data-validate="Enter password">
                                 <label class="" data-placeholder="Password">Password</label>
                                 <input required class="input100" type="password" name="password">
                             </div>
@@ -78,7 +80,9 @@
 
     <script>
         $(document).ready(function() {
+            console.log('ready');
             $('.form').submit(function(e) {
+                $('#loader').show();
                 e.preventDefault();
                 var form = $(this);
                 var data = form.serialize();
@@ -89,6 +93,8 @@
                     url: url,
                     data: data,
                     success: function(response) {
+                        $('#loader').hide();
+                        console.log(response);
                         if (response == 'success') {
                             window.location.href = '/verifyemail';
                         } else

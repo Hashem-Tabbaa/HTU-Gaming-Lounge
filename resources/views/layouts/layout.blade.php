@@ -54,21 +54,21 @@
                     <img src="/images/HTU Logo200.png" width="100" height="auto">
                 </a>
                 @if (Auth::check())
-                    <div class="d-flex">
-                        @if (Auth::user()->role == 'admin')
-                            <div class="dropdown">
-                                <button class="logout-btn" style="margin-right: 10px" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                    {{ Auth::user()->fname }}
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: fit-content;">
-                                    <a class="dropdown-item" href="/admin/">reservations</a>
-                                    <a class="dropdown-item" href="/admin/settings">settings</a>
-                                </div>
-                            </div>
-                        @else
-                        <div class="dropdown">
+                <div class="d-flex">
+                    @if (Auth::user()->role == 'admin')
+                    <div class="dropdown">
+                        <button class="logout-btn" style="margin-right: 10px" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        {{ Auth::user()->fname }}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: fit-content;">
+                        <a class="dropdown-item" href="/admin/">reservations</a>
+                        <a class="dropdown-item" href="/admin/settings">settings</a>
+                    </div>
+                </div>
+                @else
+                <div class="dropdown">
                             <button class="logout-btn" style="margin-right: 10px" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-caret-down" aria-hidden="true"></i>
@@ -82,17 +82,18 @@
                         @endif
                         <a class="logout-btn" href="/logout">Log Out </a>
                     </div>
-                @else
+                    @else
                     <div class="d-flex justify-content-between">
                         <a class="logout-btn" style="margin-right: 10px" href='/login'>Log in </a>
                         <a class="logout-btn" href='/register'>Register </a>
                     </div>
-                @endif
-            </div>
-        </nav>
-    </header>
-    @include('sweet::alert')
-    @yield('content')
-</body>
+                    @endif
+                </div>
+            </nav>
+        </header>
+        @include('sweet::alert')
+        <div id='loader'></div>
+        @yield('content')
+    </body>
 
-</html>
+    </html>

@@ -35,6 +35,7 @@
             <script>
                 $(document).ready(function() {
                     $('.form').submit(function(e) {
+                        $('#loader').show();
                         e.preventDefault();
                         var form = $(this);
                         $.ajax({
@@ -42,6 +43,7 @@
                             url: form.attr('action'),
                             data: form.serialize(),
                             success: function(data) {
+                                $('#loader').hide();
                                 if(isNaN(data)){
                                     swal({
                                         icon: "error",

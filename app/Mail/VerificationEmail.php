@@ -31,7 +31,7 @@ class VerificationEmail extends Mailable
      * @return $this
      */
     public function build(){
-        return $this->view('email')->with([
+        return $this->view('emails.verificationCodeEmail')->with([
             'otp' => $this->otp,
             'fname' => $this->fname,
             'lname' => $this->lname

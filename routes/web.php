@@ -40,6 +40,7 @@ Route::get('/resendotp', 'VerifyEmailController@resendotp');
 Route::get('/forgot-password', 'ForgotPasswordController@index');
 Route::post('/forgot-password', 'ForgotPasswordController@sendPasswordResetEmail');
 Route::get('/forgot-password/{token}', 'ForgotPasswordController@getResetPasswordPage');
+Route::post('/reset-password', 'ForgotPasswordController@resetPassword');
 
 Route::get('/admin/', 'AdminController@index');
 Route::post('/admin/removeReservation', 'AdminController@removeReservation');

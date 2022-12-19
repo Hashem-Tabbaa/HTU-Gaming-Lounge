@@ -10,7 +10,7 @@
                 <span class="login100-form-title mb-5">
                     HTU Gaming Lounge
                 </span>
-                <form class="login100-form validate-form" method="post" action="/forgot-password">
+                <form class="login100-form validate-form form" method="post" action="/forgot-password">
                     @csrf
                     <div class="d-flex flex-wrap">
                         <div class="wrap-input100 validate-input m-auto" data-validate="Valid email is: a@b.c">
@@ -19,9 +19,7 @@
                         </div>
                     </div>
 
-                    @if ($errors->any())
-                        <p class="text-danger m-auto" style="width: fit-content">{{ $errors->first() }}</p>
-                    @endif
+                    <p class="text-danger m-auto" style="width: fit-content" id="error_message"></p>
 
                     <div class="container-login100-form-btn mt-3 w-25 m-auto">
                         <div class="wrap-login100-form-btn">
@@ -46,14 +44,35 @@
             </div>
         </div>
     </div>
-    @if (Session::has('success'))
-        <script>
-            swal({
-                icon: "success",
-                title: "Reservation Success",
-                text: "{{ Session::get('success') }}",
-                showConfirmButton: true,
+    <script>
+        $(document).ready(function() {
+            $('.form').submit(function(e) {
+                $('#loader').show();
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                var url = form.attr('action');
+                var method = form.attr('method');
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: data,
+                    success: function(response) {
+                        $('#loader').hide();
+                        if (response.success) {
+                            console.log(response.success);
+                            swal({
+                                icon: "success",
+                                title: "Forgot Password",
+                                text: response.success,
+                                showConfirmButton: true,
+                            });
+                        }else{
+                            $('#error_message').html(response.error);
+                        }
+                    }
+                });
             });
-        </script>
-    @endif
+        });
+    </script>
 @endsection

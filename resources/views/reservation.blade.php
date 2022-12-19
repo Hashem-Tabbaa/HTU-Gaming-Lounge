@@ -86,6 +86,7 @@
     <script>
         $(document).ready(function() {
             $('.form').submit(function(e) {
+                $('#loader').show();
                 e.preventDefault();
                 var form = $(this);
                 var data = form.serialize();
@@ -96,6 +97,7 @@
                     url: url,
                     data: data,
                     success: function(response) {
+                        $('#loader').hide();
                         console.log(response);
                         if(response.success){
                             swal({

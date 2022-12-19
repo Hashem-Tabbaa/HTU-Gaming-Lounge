@@ -7,26 +7,28 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
-use \UxWeb\SweetAlert\SweetAlert;
 
-class RegisterController extends Controller{
+class RegisterController extends Controller
+{
 
-    public function index(){
-        if( Gate::allows('user') ||Gate::allows('admin'))
+    public function index()
+    {
+        if (Gate::allows('user') || Gate::allows('admin'))
             return redirect('/arena');
 
-        if(Gate::allows('notverified'))
+        if (Gate::allows('notverified'))
             return redirect('/verifyemail');
 
         return view('register');
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
 
-        if( Gate::allows('user') || Gate::allows('admin'))
+        if (Gate::allows('user') || Gate::allows('admin'))
             return redirect('/arena');
 
-        if(Gate::allows('notverified'))
+        if (Gate::allows('notverified'))
             return redirect('/verifyemail');
 
         $validator = $this->validator($request->all());
@@ -36,33 +38,28 @@ class RegisterController extends Controller{
 
         $otp = rand(100000, 999999);
 
-        try{
-            Mail::to($request->email)->
-                send(new \App\Mail\VerificationEmail($otp, $request->fname, $request->lname));
-        }catch(\Exception $e){
+        try {
+            Mail::to($request->email)->send(new \App\Mail\VerificationEmail($otp, $request->fname, $request->lname));
+
+            $user = new User();
+            $user->uni_id = $request->uni_id;
+            $user->fname = $request->fname;
+            $user->lname = $request->lname;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->otp = $otp;
+            $user->save();
+            auth()->login($user);
+        } catch (\Exception $e) {
             return 'Something went wrong, please try again later';
         }
-
-        $user = new User();
-
-        $user->uni_id = $request->uni_id;
-        $user->fname = $request->fname;
-        $user->lname = $request->lname;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->otp = $otp;
-
-        $user->save();
-
-        // SweetAlert::success('Success', 'A verification code has been sent to your email, please enter it below');
-
-        auth()->login($user);
 
         // redirect the user to verifyemail page with success message and the otp
         return 'success';
     }
 
-    protected function validator($data){
+    protected function validator($data)
+    {
         $messages = [
             'uni_id.required' => 'The university ID is required',
             'fname.required' => 'The first name is required',
@@ -83,7 +80,7 @@ class RegisterController extends Controller{
             'uni_id' => ['required', 'string', 'max:255'],
             'fname' => ['required', 'string', 'max:255'],
             'lname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:'.$regex],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:' . $regex],
             'password' => ['required', 'string', 'min:8', 'max:20'],
             'confirmpassword' => ['required', 'same:password'],
         ], $messages);

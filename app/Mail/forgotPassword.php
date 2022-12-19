@@ -16,7 +16,7 @@ class forgotPassword extends Mailable
      *
      * @return void
      */
-    private $token, $fname, $lname;
+    private $token, $fname, $lname, $url;
     public function __construct($token, $fname, $lname)
     {
         $this->token = $token;
@@ -25,7 +25,7 @@ class forgotPassword extends Mailable
         $this->lname = $lname;
     }
     public function build(){
-        return $this->view('forgotpasswordemail')->with([
+        return $this->view('emails.forgotpasswordemail')->with([
             'url' => $this->url,
             'fname' => $this->fname,
             'lname' => $this->lname

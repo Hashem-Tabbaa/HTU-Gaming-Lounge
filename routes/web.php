@@ -37,8 +37,9 @@ Route::post('/verifyemail', 'VerifyEmailController@verify');
 
 Route::get('/resendotp', 'VerifyEmailController@resendotp');
 
-Route::get('/forgot-password', 'ForgotPasswordController@index')->name('forgot.password');
-Route::post('/forgot-password', 'ForgotPasswordController@sendPasswordResetEmail')->name('forgot.password.submit');
+Route::get('/forgot-password', 'ForgotPasswordController@index');
+Route::post('/forgot-password', 'ForgotPasswordController@sendPasswordResetEmail');
+Route::get('/forgot-password/{token}', 'ForgotPasswordController@getResetPasswordPage');
 
 Route::get('/admin/', 'AdminController@index');
 Route::post('/admin/removeReservation', 'AdminController@removeReservation');
@@ -51,9 +52,11 @@ Route::post('/changepassword', 'ChangePasswordController@changePassword');
 Route::get('/myreservations', 'MyReservationsController@index');
 Route::post('/myreservations/cancel', 'MyReservationsController@cancel');
 
+
 Route::get('/artisan', function () {
     Artisan::call('migrate', [
         '--force' => true,
     ]);
     Artisan::call('optimize');
 });
+

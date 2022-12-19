@@ -26,7 +26,7 @@
                         <button class="btn btn-primary" type="submit">
                             Verify
                         </button>
-                        <a href="/resendotp" class="btn btn-primary">Resend a verification code</a>
+                        <a href="/resendotp" class="btn btn-primary">Resend</a>
                     </div>
                 </form>
         </div>

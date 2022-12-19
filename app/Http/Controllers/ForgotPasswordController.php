@@ -36,7 +36,11 @@ class ForgotPasswordController extends Controller
         }
 
         // Generate a password reset token for the user
-        // $token =
+        $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        $token = substr(str_shuffle(str_repeat($pool, 1)), 0, 60);
+
+        User::where('email', $request->email)->update(['password_reset_token' => $token]);
 
         // Send the password reset email to the user
         try {
@@ -47,6 +51,14 @@ class ForgotPasswordController extends Controller
 
 
         // Redirect back with a success message
-        return redirect()->back()->with('status', 'We have sent a password reset link to your email. Please check your email and follow the instructions to reset your password.');
+        return redirect()->back()->with('success', 'We have sent a password reset link to your email. Please check your email and follow the instructions to reset your password.');
+    }
+
+    public function getResetPasswordPage($token){
+        $user = User::where('password_reset_token', $token)->get();
+
+
+        if($user == null)
+            return redirect('/');
     }
 }

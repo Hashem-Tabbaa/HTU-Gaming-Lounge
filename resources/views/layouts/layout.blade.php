@@ -49,8 +49,8 @@
 <body>
     <header class="">
         <nav class="navbar-sm navbar-light p-0 m-0" style="background-color: #e9ecef ;">
-            <div class="container d-flex justify-content-between p-0">
-                <a class="navbar-brand" href="/arena" class="m-auto">
+            <div class="container d-flex justify-content-between main-header p-0">
+                <a class="navbar-brand" href="/arena" class="m-auto homepage-img">
                     <img src="/images/HTU Logo200.png" width="100" height="auto">
                 </a>
                 @if (Auth::check())

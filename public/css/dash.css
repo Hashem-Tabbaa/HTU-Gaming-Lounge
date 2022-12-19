@@ -149,11 +149,14 @@ body .container .card .box .content a:hover , .logout-btn:hover {
         height: 75;
     }
 }
-@media(max-width: 375px){
+@media(max-width: 450px){
     #reservation-title{
         font-size: 1rem;
     }
     .main-img{
-        height: 50;
+        display: none;
+    }
+    .main-header{
+        flex-direction: column !important;
     }
 }

@@ -37,12 +37,8 @@ Route::post('/verifyemail', 'VerifyEmailController@verify');
 
 Route::get('/resendotp', 'VerifyEmailController@resendotp');
 
-Route::get('/forgotpassword/', 'ForgotPasswordController@index');
-Route::get('/forgotpassword/verify', 'ForgotPasswordController@verifyPage');
-Route::post('/forgotpassword/verify', 'ForgotPasswordController@verifyotp');
-Route::post('/forgotpassword/sendotp', 'ForgotPasswordController@sendotp');
-
-
+Route::get('/forgot-password', 'ForgotPasswordController@index')->name('forgot.password');
+Route::post('/forgot-password', 'ForgotPasswordController@sendPasswordResetEmail')->name('forgot.password.submit');
 
 Route::get('/admin/', 'AdminController@index');
 Route::post('/admin/removeReservation', 'AdminController@removeReservation');

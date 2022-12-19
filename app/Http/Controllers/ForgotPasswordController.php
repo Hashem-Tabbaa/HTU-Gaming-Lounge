@@ -6,68 +6,47 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Password;
 
-class ForgotPasswordController extends Controller{
+class ForgotPasswordController extends Controller
+{
 
 
-    public function index(){
-        if( Gate::allows('user') || Gate::allows('admin') || Gate::allows('notverified') ){
+    public function index()
+    {
+        if (Gate::allows('user') || Gate::allows('admin') || Gate::allows('notverified')) {
             return redirect('/index');
         }
         return view('forgotpassword');
     }
 
-    public function sendotp(Request $request)
-    {
-        if (Gate::allows('user') || Gate::allows('admin') || Gate::allows('notverified')) {
-            return redirect('/index');
-        }
-        $email = $request->email;
-        $user = User::where('email', $email)->first();
-        if ($user) {
-            $otp = rand(100000, 999999);
-            $fname = $user->fname;
-            $lname = $user->lname;
-            User::where('email', $email)->update(['otp' => $otp]);
-            try {
-                Mail::send(
-                    'email',
-                    ['otp' => $otp, 'fname' => $fname, 'lname' => $lname],
-                    function ($message) use ($email) {
-                        $message->to($email, 'HTU Arena')->subject('HTU Arena - Verify your email');
-                        $message->from('htugaminglounge@gmail.com', 'HTU Arena');
-                    }
-                );
-            } catch (\Exception $e) {
-                return redirect('/forgotpassword')->withErrors('Something went wrong, please try again later')->withInput();
-            }
-            return redirect('/verifyforgotpassword')->with('success', 'A verification code has been sent to your email, please enter it below');
-        }
-        return redirect('/forgotpassword')->withErrors('Email not found, please try again')->withInput();
-    }
+    public function sendPasswordResetEmail(Request $request){
 
-    public function verifyPage($request){
-        if( Gate::allows('user') || Gate::allows('admin') || Gate::allows('notverified') ){
-            return redirect('/index');
-        }
-        $email = $request->email;
-        Session::put('forgotpassword', $email);
-        return view('verifyforgotpassword');
-    }
+        // Validate the form data
+        $request->validate([
+            'email' => 'required|email',
+        ]);
 
-    public function verifyotp(Request $request)
-    {
-        if (Gate::allows('user') || Gate::allows('admin') || Gate::allows('notverified')) {
-            return redirect('/index');
+        // Get the user with the provided email
+        $user = User::where('email', $request->email)->first();
+
+        // If the user doesn't exist, redirect back with an error message
+        if (!$user) {
+            return redirect()->back()->withErrors(['email' => 'We couldn\'t find a user with that email address.']);
         }
-        $otp = $request->otp;
-        $user = User::where('otp', $otp)->first();
-        if ($user) {
-            $user->otp = null;
-            $user->save();
-            return redirect('/resetpassword');
+
+        // Generate a password reset token for the user
+        // $token =
+
+        // Send the password reset email to the user
+        try {
+            Mail::to($request->email)->send(new \App\Mail\forgotPassword($token, $request->fname, $request->lname));
+        } catch (\Exception $e) {
+            return $e;
         }
-        return redirect('/verifyotp')->withErrors('Wrong code, please try again')->withInput();
+
+
+        // Redirect back with a success message
+        return redirect()->back()->with('status', 'We have sent a password reset link to your email. Please check your email and follow the instructions to reset your password.');
     }
 }

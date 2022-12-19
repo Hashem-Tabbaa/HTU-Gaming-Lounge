@@ -49,7 +49,7 @@
                     <span class="txt4">
                         Forgot your password?
                     </span>
-                    <a class="txt3 link-danger" href="/forgotpassword/" style="font-size: 1.1em">
+                    <a class="txt3 link-danger" href="/forgot-password/" style="font-size: 1.1em">
                         Reset password
                     </a>
                 </div>

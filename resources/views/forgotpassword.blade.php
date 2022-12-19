@@ -10,7 +10,7 @@
             <span class="login100-form-title mb-5">
                 HTU Gaming Lounge
             </span>
-            <form class="login100-form validate-form" method="post" action="/forgotpassword/verify">
+            <form class="login100-form validate-form" method="post" action="/forgot-password">
                 @csrf
                 <div class="d-flex flex-wrap">
                     <div class="wrap-input100 validate-input m-auto" data-validate = "Valid email is: a@b.c">

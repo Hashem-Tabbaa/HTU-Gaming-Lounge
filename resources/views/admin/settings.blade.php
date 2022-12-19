@@ -23,7 +23,7 @@
                             <div class="content">
                                 <img src={{ $image_path }} alt="" width="auto" height="75">
                                 <h4 class="mb-5">{{ $game->name }}</h4>
-                                <form class="form-group d-flex flex-column form" action="/admin/settings/update"
+                                <form class="form-group d-flex flex-column form-games" action="/admin/settings/update"
                                     method="post" id="{{ $game->name }}">
                                     @csrf
                                     <input type="hidden" name="name" value="{{ $game->name }}">
@@ -55,11 +55,61 @@
                 @endforeach
             </div>
         </div>
-        <div class="tab-pane fade" id="students-settings" role="tabpanel" aria-labelledby="students-settings-tab">...</div>
+        <div class="tab-pane fade" id="students-settings" role="tabpanel" aria-labelledby="students-settings-tab">
+            <br>
+            <div class="p-3">
+                <form class="form-ban" action="/admin/settings/ban" method="POST" class="form">
+                    @csrf
+                    <label style="margin-left: 15px" class="" for="studentEmail">Ban a student</label>
+                    <div class="d-flex flex-row">
+                        <div>
+                            <input class="form-control  " type="text" name="email" placeholder="Student Email" id="email">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-danger">Ban</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Student First Name</th>
+                        <th scope="col">Student Last Name</th>
+                        <th scope="col">Student Email</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($users as $user)
+                        <tr class="" id="{{$user->email}}">
+                            <td>{{ $user->fname }}</td>
+                            <td>{{ $user->lname }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td class="text-center">
+                                <form class="form-unban" action="/admin/settings/unban" method="POST" class="form">
+                                    @csrf
+                                    <input type="text " name="email" value="{{ $user->email }}" hidden>
+                                    <button type="submit" class="btn btn-danger">Unban</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+        </div>
     </div>
     <script>
         $(document).ready(function() {
-            $('.form').submit(function(e) {
+            $('.form-games').submit(function(e) {
                 e.preventDefault();
                 var form = $(this);
                 var data = form.serialize();
@@ -75,6 +125,24 @@
                         setTimeout(function() {
                             document.getElementById('success_' + response).hidden = true;
                         }, 2000);
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $('.form-unban').submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                var url = form.attr('action');
+                var method = form.attr('method');
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: data,
+                    success: function(response) {
+                        document.getElementById(response).hidden = true;
                     }
                 });
             });

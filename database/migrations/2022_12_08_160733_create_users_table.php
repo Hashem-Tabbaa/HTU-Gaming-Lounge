@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('otp')->nullable();
             $table->integer('number_of_reservations')->default(0);
+            $table->string('password_reset_token ')->nullable();
             $table->timestamps();
         });
     }

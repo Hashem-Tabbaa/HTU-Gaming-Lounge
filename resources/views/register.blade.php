@@ -5,7 +5,7 @@
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-login100 p-0 pt-5 pb-5">
-            <form class="login100-form validate-form" method="post" action="/register">
+            <form class="login100-form validate-form form" method="post" action="/register">
                 @csrf
                 <span class="login100-form-title p-b-48">
                     <img src="./images/HTU Logo-250px.png" alt="">
@@ -50,9 +50,7 @@
                     </div>
                 </div>
 
-                @if ($errors->any())
-                    <p class="text-danger m-auto" style="width: fit-content">{{ $errors->first() }}</p>
-                @endif
+                <p class="text-danger m-auto" id="error_message" style="width: fit-content"></p>
 
                 <div class="container-login100-form-btn w-50 m-auto">
                     <div class="wrap-login100-form-btn">
@@ -77,5 +75,29 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+        $('.form').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var data = form.serialize();
+            var url = form.attr('action');
+            var method = form.attr('method');
+            $.ajax({
+                type: method,
+                url: url,
+                data: data,
+                success: function(response) {
+                    if(response == 'success'){
+                        window.location.href = '/verifyemail';
+                    }
+                    else
+                        document.getElementById('error_message').innerHTML = response;
+                }
+            });
+        });
+    });
+</script>
 
 @endsection

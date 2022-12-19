@@ -30,9 +30,7 @@ class LoginController extends Controller{
 
         $validator = $this->validator($request->all());
         if ($validator->fails()) {
-            return redirect('/login')
-                        ->withErrors($validator)
-                        ->withInput();
+            return $validator->errors()->first();
         }
 
         $credentials = $request->only('email', 'password');
@@ -40,10 +38,10 @@ class LoginController extends Controller{
         if(auth()->attempt($credentials)){
             if(auth()->user()->role == 'admin')
                 return redirect('/admin');
-            return redirect('/arena');
+            return 'success';
         }
 
-        return redirect('/login')->withErrors('Invalid email or password')->withInput();
+        return 'Invalid email or password';
     }
     public function logout(){
         auth()->logout();

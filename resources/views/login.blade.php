@@ -10,7 +10,7 @@
             <span class="login100-form-title mb-5">
                 HTU Gaming Lounge
             </span>
-            <form class="login100-form validate-form" method="post" action="login">
+            <form class="login100-form validate-form form" method="post" action="login">
                 @csrf
                 <div class="d-flex flex-wrap">
                     <div class="wrap-input100 validate-input m-auto" data-validate = "Valid email is: a@b.c">
@@ -24,9 +24,7 @@
                     </div>
                 </div>
 
-                @if ($errors->any())
-                    <p class="text-danger m-auto" style="width: fit-content">{{ $errors->first() }}</p>
-                @endif
+                <p class="text-danger m-auto" style="width: fit-content" id="error_message"></p>
 
                 <div class="container-login100-form-btn mt-3 w-50 m-auto">
                     <div class="wrap-login100-form-btn">
@@ -59,4 +57,28 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+            $('.form').submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                var url = form.attr('action');
+                var method = form.attr('method');
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: data,
+                    success: function(response) {
+                        if(response == 'success') {
+                            window.location.href = '/';
+                        }
+                        else{
+                            document.getElementById('error_message').innerHTML = response;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

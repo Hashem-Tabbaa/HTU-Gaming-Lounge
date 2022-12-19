@@ -31,9 +31,7 @@ class RegisterController extends Controller{
 
         $validator = $this->validator($request->all());
         if ($validator->fails()) {
-            return redirect('/register')
-                        ->withErrors($validator)
-                        ->withInput();
+            return $validator->errors()->first();
         }
 
         $otp = rand(100000, 999999);
@@ -42,7 +40,7 @@ class RegisterController extends Controller{
             Mail::to($request->email)->
                 send(new \App\Mail\VerificationEmail($otp, $request->fname, $request->lname));
         }catch(\Exception $e){
-            return redirect('/register')->withError('Something went wrong, please try again later')->withInput();
+            return 'Something went wrong, please try again later';
         }
 
         $user = new User();
@@ -61,7 +59,7 @@ class RegisterController extends Controller{
         auth()->login($user);
 
         // redirect the user to verifyemail page with success message and the otp
-        return redirect('/verifyemail')->with('success', 'A verification code has been sent to your email, please enter it below');
+        return 'success';
     }
 
     protected function validator($data){

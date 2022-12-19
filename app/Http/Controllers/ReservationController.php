@@ -44,8 +44,8 @@ class ReservationController extends Controller{
         }
 
         $users = User::whereIn('email', $emails)->where('verified', 1)->where('is_banned', 0)->get();
-        if($users->count() != count($emails))
-            return redirect('/reservation/'.$game)->with('error', 'One of the players is not registered or not verified');
+        if ($users->count() != count($emails))
+            return ['error' => 'One of the players is not verified or registered'];
 
         // Check if the time slot is already reserved
         $reservations = Reservation::where('game_name', $game)->where('res_time', $time_slot)->count();
@@ -53,7 +53,7 @@ class ReservationController extends Controller{
         $session_duration = Game::where('name', $game)->first()->session_duration;
 
         if($reservations == $sessions_capacity)
-            return redirect('/reservation/'.$game)->with('error', 'The selected time slot is already reserved');
+            return ['error' => 'This time slot is already reserved'];
         // Check if the user has already reserved a time slot for this game
         $reservation = Reservation::
         whereIn('student1_email', $emails)->
@@ -62,8 +62,8 @@ class ReservationController extends Controller{
         OrWhereIn('student4_email', $emails)->
         first();
 
-        if($reservation != null)
-            return redirect('/reservation/'.$game)->with('error', 'One of the players has already reserved a game today');
+        if ($reservation != null)
+            return ['error' => 'One of the players has already reserved a time slot for this game'];
 
         // Create reservation
         $reservation = new Reservation();
@@ -76,7 +76,7 @@ class ReservationController extends Controller{
         }
         $reservation->save();
 
-        return redirect('/reservation/'.$game)->with('success', 'Reservation successful');
+        return ['success' => 'Reservation created successfully'];
     }
     private function generateTimeSlots($game){
 

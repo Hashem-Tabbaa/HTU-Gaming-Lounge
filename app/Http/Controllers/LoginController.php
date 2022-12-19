@@ -37,7 +37,7 @@ class LoginController extends Controller{
 
         if(auth()->attempt($credentials)){
             if(auth()->user()->role == 'admin')
-                return redirect('/admin');
+                return 'success';
             return 'success';
         }
 

@@ -46,8 +46,7 @@ class MyReservationsController extends Controller
             $current_time = Carbon::now()->addHours(3)->toTimeString();
 
             if ($current_time >= $start_time && $current_time <= $closing_time)
-                return 'You cannot cancel a reservation that is currently in progress!';
-
+                return 'You cannot cancel a reservation that has finished or is currently in progress.';
             if (
                 $reservation->student1_email == auth()->user()->email
                 || $reservation->student2_email == auth()->user()->email || $reservation->student3_email == auth()->user()->email

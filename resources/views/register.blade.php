@@ -30,7 +30,7 @@
                         <div class="d-flex justify-content-around">
                             <div class="wrap-input100 validate-input" style="margin-right:10px;" data-validate="Valid email is: a@htu.edu.jo">
                                 <label class="" data-placeholder="Email">Email</label>
-                                <input required class="input100 w-25" type="text" name="email">
+                                <input required class="input100" type="text" name="email">
                             </div>
                             <div class="wrap-input100 validate-input">
                                 <label class="" data-placeholder="University ID">University ID</label>

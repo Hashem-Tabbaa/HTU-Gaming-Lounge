@@ -33,6 +33,9 @@ class VerifyEmailController extends Controller{
 
     public function resendotp(){
 
+        if (Gate::denies('notverified'))
+            return redirect('/arena');
+
         $email = auth()->user()->email;
         if ($email == null)
             return redirect('/index');
@@ -45,9 +48,9 @@ class VerifyEmailController extends Controller{
             Mail::to($email)->
                 send(new \App\Mail\VerificationEmail($otp, $fname, $lname));
         }catch(\Exception $e){
-            return redirect('/verifyemail')->withError('Something went wrong, please try again later')->withInput();
+            return ['error' => 'Something went wrong, please try again later'];
         }
 
-        return redirect('/verifyemail')->with('success', 'A verification code has been sent to your email, please enter it below');
+        return ['success' => 'A verification code has been sent to your email'];
     }
 }

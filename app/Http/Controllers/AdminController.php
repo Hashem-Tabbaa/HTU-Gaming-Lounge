@@ -26,4 +26,15 @@ class AdminController extends Controller{
         $reservation->delete();
         return $request->id;
     }
+
+    public function removeAllReservations(Request $request){
+        if (Gate::denies('admin'))
+            return redirect('/');
+
+        $reservations = Reservation::all();
+        foreach($reservations as $reservation){
+            $reservation->delete();
+        }
+        return redirect('/admin');
+    }
 }

@@ -18,21 +18,7 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected function schedule(Schedule $schedule){
-        // $closing_time = Game::max('end_time');
-        // $schedule->call(function () {
-        //     Reservation::all()->delete();
-        // })
-        //     ->dailyAt($closing_time)
-        //     ->days([Schedule::SUNDAY, Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY])
-        //     ->timezone('Asia/Amman');
-        $closing_time = Game::max('end_time');
-        $schedule->command('reservations:delete')
-            ->dailyAt($closing_time)
-            ->days([Schedule::SUNDAY, Schedule::MONDAY, Schedule::TUESDAY, Schedule::WEDNESDAY, Schedule::THURSDAY])
-            ->timezone('Asia/Amman');
-
-
-
+        $schedule->command('reservations:delete')->at('00:00')->daily();
     }
 
     /**

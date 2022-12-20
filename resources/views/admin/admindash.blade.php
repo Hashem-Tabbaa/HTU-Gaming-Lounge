@@ -24,6 +24,13 @@
         </div>
     </div>
 
+    <div class="m-auto" style="width: fit-content">
+        <form action="/admin/removeReservation/all" method="POST" class="">
+            @csrf
+            <button type="submit" class="btn btn-danger">Delete All</button>
+        </form>
+    </div>
+
     <table class="table table-striped">
         <thead>
             <tr>

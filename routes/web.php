@@ -53,11 +53,4 @@ Route::post('/changepassword', 'ChangePasswordController@changePassword');
 Route::get('/myreservations', 'MyReservationsController@index');
 Route::post('/myreservations/cancel', 'MyReservationsController@cancel');
 
-
-Route::get('/artisan', function () {
-    Artisan::call('migrate', [
-        '--force' => true,
-    ]);
-    Artisan::call('optimize');
-});
-
+Route::post('/admin/removeReservation/all', 'AdminController@removeAllReservations');

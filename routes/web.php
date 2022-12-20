@@ -54,3 +54,5 @@ Route::get('/myreservations', 'MyReservationsController@index');
 Route::post('/myreservations/cancel', 'MyReservationsController@cancel');
 
 Route::post('/admin/removeReservation/all', 'AdminController@removeAllReservations');
+Route::post('admin/settings/ban', 'SettingsController@ban');
+Route::post('admin/settings/unban', 'SettingsController@unban');

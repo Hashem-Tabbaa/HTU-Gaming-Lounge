@@ -87,7 +87,7 @@
         <script>
             swal({
                 icon: "success",
-                title: "Reservation Success",
+                title: "Password Changed Successfully",
                 text: "{{ Session::get('success') }}",
                 showConfirmButton: true,
             });

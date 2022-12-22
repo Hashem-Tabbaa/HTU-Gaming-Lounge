@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+
+
 class LoginController extends Controller{
 
     public function index(){
@@ -36,8 +37,6 @@ class LoginController extends Controller{
         $credentials = $request->only('email', 'password');
 
         if(auth()->attempt($credentials)){
-            if(auth()->user()->role == 'admin')
-                return 'success';
             return 'success';
         }
 

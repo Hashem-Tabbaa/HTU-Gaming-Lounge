@@ -54,16 +54,15 @@ class ReservationController extends Controller{
 
         if($reservations == $sessions_capacity)
             return ['error' => 'This time slot is already reserved'];
-        // Check if the user has already reserved a time slot for this game
-        $reservation = Reservation::
-        whereIn('student1_email', $emails)->
-        OrWhereIn('student2_email', $emails)->
-        OrWhereIn('student3_email', $emails)->
-        OrWhereIn('student4_email', $emails)->
-        first();
 
-        if ($reservation != null)
-            return ['error' => 'One of the players has already reserved a time slot for this game'];
+        // Check if the user has exceeded the maximum number of reservations
+        $max_number_of_reservations = Game::where('name', $game)->first()->max_number_of_reservations;
+
+        foreach($emails as $email){
+            $numberOfReservations = User::where('email', $email)->first()->number_of_reservations;
+            if($numberOfReservations >= $max_number_of_reservations)
+                return ['error' => 'One of the players has already reserved the maximum number of reservations for today'];
+        }
 
         // Create reservation
         $reservation = new Reservation();
@@ -75,6 +74,14 @@ class ReservationController extends Controller{
             $reservation->{'student'.($key+1).'_email'} = $email;
         }
         $reservation->save();
+
+
+        // Update number of reservations for each user
+        foreach($emails as $email){
+            $user = User::where('email', $email)->first();
+            $user->number_of_reservations++;
+            $user->save();
+        }
 
         return ['success' => 'Reservation created successfully'];
     }

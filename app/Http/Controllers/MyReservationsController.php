@@ -58,7 +58,8 @@ class MyReservationsController extends Controller
                 auth()->user()->save();
                 return 'Dont try to cancel other peoples reservations! You are banned. Contact the admin.';
             }
-
+            auth()->user()->number_of_reservations -= 1;
+            auth()->user()->save();
             return $reservation_id;
         } catch (\Exception $e) {
             return 'Something went wrong. Please try again later.';

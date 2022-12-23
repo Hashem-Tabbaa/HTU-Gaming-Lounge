@@ -19,6 +19,7 @@ class CreateGamesTable extends Migration
             $table->time('end_time');
             $table->integer('session_duration');
             $table->integer('sessions_capacity')->nullable();
+            $table->integer('max_number_of_reservations')->default(1);
             $table->timestamps();
         });
 

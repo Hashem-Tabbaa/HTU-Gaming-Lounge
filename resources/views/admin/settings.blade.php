@@ -12,11 +12,27 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="games-settings" role="tabpanel" aria-labelledby="games-settings-tab">
+            <div class="m-auto mt-4 card" style="width: fit-content; background-color: white">
+                <form class="form-num" action="/admin/settings/max-res" method="POST" class="form">
+                    @csrf
+                    <div class="d-flex flex-row">
+                        <label style="margin-right:10px;" class="ml-4" for="studentEmail">Maximum number of reservations
+                            per student</label>
+                        <div>
+                            <input type="number" name="max_num_of_res" id="max_num_of_res" style="width: 40px"
+                                min="0" value="{{ $games[0]->max_number_of_reservations }}">
+                        </div>
+                    </div>
+                    <p class="text-success" id="form-num" hidden>Settings saved successfully</p>
+                    <div>
+                        <button type="submit" class="btn btn-primary w-100">Save</button>
+                    </div>
+                </form>
+            </div>
             <div class="container d-flex">
                 @foreach ($games as $game)
                     <?php
                     $image_path = '/images/' . $game->name . '.gif';
-                    $reservation_path = '/reservation/' . $game->name;
                     ?>
                     <div class="card">
                         <div class="box-admin">
@@ -46,7 +62,8 @@
                                         <input type="number" name="sessions_capacity" id="sessions_capacity"
                                             value="{{ $game->sessions_capacity }}" style="width: 50px" min="0">
                                     </div>
-                                    <p class="text-success" id="success_{{ $game->name }}" hidden>Settings saved successfully</p>
+                                    <p class="text-success" id="success_{{ $game->name }}" hidden>Settings saved
+                                        successfully</p>
                                     <button type="submit" class="btn btn-primary mt-3">Save</button>
                                 </form>
                             </div>
@@ -63,7 +80,8 @@
                     <label style="margin-left: 15px" class="" for="studentEmail">Ban a student</label>
                     <div class="d-flex flex-row">
                         <div>
-                            <input class="form-control  " type="text" name="email" placeholder="Student Email" id="email">
+                            <input class="form-control  " type="text" name="email" placeholder="Student Email"
+                                id="email">
                         </div>
                         <div>
                             <button type="submit" class="btn btn-danger">Ban</button>
@@ -85,7 +103,7 @@
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
-                        <tr class="" id="{{$user->email}}">
+                        <tr class="" id="{{ $user->email }}">
                             <td>{{ $user->fname }}</td>
                             <td>{{ $user->lname }}</td>
                             <td>{{ $user->email }}</td>
@@ -105,7 +123,7 @@
 
 
 
-        </div>
+    </div>
     </div>
     <script>
         $(document).ready(function() {
@@ -120,10 +138,10 @@
                     url: url,
                     data: data,
                     success: function(response) {
-                        console.log(response);
                         document.getElementById('success_' + response).hidden = false;
                         setTimeout(function() {
-                            document.getElementById('success_' + response).hidden = true;
+                            document.getElementById('success_' + response).hidden =
+                            true;
                         }, 2000);
                     }
                 });
@@ -143,6 +161,30 @@
                     data: data,
                     success: function(response) {
                         document.getElementById(response).hidden = true;
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $('.form-num').submit(function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = form.serialize();
+                var url = form.attr('action');
+                var method = form.attr('method');
+                $.ajax({
+                    type: method,
+                    url: url,
+                    data: data,
+                    success: function(response) {
+                        console.log(response);
+                        if (response == 'success') {
+                            document.getElementById('form-num').hidden = false;
+                            setTimeout(function() {
+                                document.getElementById('form-num').hidden = true;
+                            }, 2000);
+                        }
                     }
                 });
             });

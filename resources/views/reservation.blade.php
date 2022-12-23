@@ -11,6 +11,12 @@
                 <span class="login100-form-title p-b-26" id="reservation-title">
                     {{ $game->name }} ( {{ $game->session_duration }} min)
                 </span>
+                <span class="login100-form-title mb-2">
+                    <p class="m-auto" style="width: fit-content;">
+                        Remaining reservations for today: {{ $game->max_number_of_reservations - auth()->user()->number_of_reservations}}
+                    </p>
+                </span>
+
                 <p class="text-primary m-auto mb-4" style="width: fit-content;"> *You are the first player </p>
                 <form method="post" action="/reserve" class="form">
                     @csrf

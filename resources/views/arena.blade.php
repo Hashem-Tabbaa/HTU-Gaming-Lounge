@@ -26,7 +26,7 @@
           <script>
             Swal.fire({
               icon: "error",
-              title: "Reservation Failed",
+              title: "Oops...",
               text: "{{$errors->first()}}",
               showConfirmButton: true,
               confirmButtonText: "OK",

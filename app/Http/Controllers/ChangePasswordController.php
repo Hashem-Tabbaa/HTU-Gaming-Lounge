@@ -36,7 +36,7 @@ class ChangePasswordController extends Controller{
         $newpassword = $request->newpassword;
 
         if( !Hash::check($oldpassword, $user->password) )
-            return redirect('/changepassword')->withError('Your old password is incorrect')->withInput();
+            return redirect('/changepassword')->withErrors('Your old password is incorrect')->withInput();
 
         $user->password = Hash::make($newpassword);
         $user->save();

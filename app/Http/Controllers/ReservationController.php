@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Game;
 use App\Models\reservation;
+use DateTimeZone;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
+use Illuminate\Support\Facades\Date;
 
 class ReservationController extends Controller{
 
@@ -21,6 +22,8 @@ class ReservationController extends Controller{
 
         $game = Game::where('name', $game_name)->first();
         $timeSlots = $this->generateTimeSlots($game);
+
+        // current time in time zone Asia/Amman
         if($timeSlots == null)
             return back()->withErrors('There is no available slot for this game.');
             // return redirect('/arena')->withErrors('No time slots available for this game today');

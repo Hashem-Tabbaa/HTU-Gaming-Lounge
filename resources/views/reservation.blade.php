@@ -13,7 +13,12 @@
                 </span>
                 <span class="login100-form-title mb-2">
                     <p class="m-auto" style="width: fit-content;">
-                        Remaining reservations for today: {{ $game->max_number_of_reservations - auth()->user()->number_of_reservations}}
+                        @if (auth()->user()->is_banned == 1)
+                            <span class="text-danger">You are banned</span>
+                        @else
+                            Remaining reservations for today:
+                            {{ $game->max_number_of_reservations - auth()->user()->number_of_reservations }}
+                        @endif
                     </p>
                 </span>
 
@@ -105,15 +110,14 @@
                     success: function(response) {
                         $('#loader').hide();
                         console.log(response);
-                        if(response.success){
+                        if (response.success) {
                             swal({
                                 icon: "success",
                                 title: "Reservation Success",
                                 text: response.success,
                                 showConfirmButton: true,
                             });
-                        }
-                        else{
+                        } else {
                             swal({
                                 icon: "error",
                                 title: "Reservation Failed",

@@ -32,7 +32,16 @@ class SettingsController extends Controller
         Game::where('name', $game_name)->update([
             'start_time' => $request->input('start_time'), 'end_time' => $request->input('end_time'), 'session_duration' => $request->input('session_duration'), 'sessions_capacity' => $request->input('sessions_capacity')
         ]);
-        Reservation::where('game_name', $game_name)->delete();
+
+        // get users who have reservations for this game
+        $resrevations = Reservation::where('game_name', $game_name)->get();
+        // for each user, delete his reservations and change the number of reservations
+        foreach ($resrevations as $resrevation) {
+            $user = User::where('email', $resrevation->user_email)->first();
+            $user->number_of_reservations = $user->number_of_reservations - 1;
+            $user->save();
+            $resrevation->delete();
+        }
         // return the ajax response
         return $request->input('name');
     }

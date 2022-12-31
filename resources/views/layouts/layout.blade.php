@@ -91,7 +91,6 @@
                 </div>
             </nav>
         </header>
-        @include('sweet::alert')
         <div id='loader'></div>
         @yield('content')
     </body>

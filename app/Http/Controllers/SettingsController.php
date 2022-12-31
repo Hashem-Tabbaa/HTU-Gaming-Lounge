@@ -36,11 +36,14 @@ class SettingsController extends Controller
         // get users who have reservations for this game
         $resrevations = Reservation::where('game_name', $game_name)->get();
         // for each user, delete his reservations and change the number of reservations
-        foreach ($resrevations as $resrevation) {
-            $user = User::where('email', $resrevation->user_email)->first();
-            $user->number_of_reservations = $user->number_of_reservations - 1;
-            $user->save();
-            $resrevation->delete();
+        foreach ($resrevations as $reservation) {
+            $users = User::where('email', $reservation->student1_email)->orWhere('email', $reservation->student2_email)->
+            orWhere('email', $reservation->student3_email)->orWhere('email', $reservation->student4_email)->get();
+            foreach ($users as $user) {
+                $user->number_of_reservations = $user->number_of_reservations - 1;
+                $user->save();
+            }
+            $reservation->delete();
         }
         // return the ajax response
         return $request->input('name');

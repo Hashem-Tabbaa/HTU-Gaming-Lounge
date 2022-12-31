@@ -27,7 +27,7 @@
     <div class="m-auto" style="width: fit-content">
         <form action="/admin/removeReservation/all" method="POST" class="">
             @csrf
-            <button type="submit" class="btn btn-danger">Delete All</button>
+            <button type="submit" class="btn btn-danger">Delete <strong>All</strong></button>
         </form>
     </div>
 

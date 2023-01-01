@@ -3,8 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Reservation;
+use App\Models\User;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TruncateOldReservations extends Command
 {
@@ -38,10 +39,13 @@ class TruncateOldReservations extends Command
      * @return int
      */
     public function handle(){
-
         // empty the reservations table
         Reservation::all()->each(function($reservation){
             $reservation->delete();
+        });
+        User::all()->each(function ($user) {
+            $user->number_of_reservations = 0;
+            $user->save();
         });
     }
 }

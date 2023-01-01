@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected function schedule(Schedule $schedule){
-        $schedule->command('reservations:delete')->at('00:00')->daily();
+        $schedule->command('reservation:delete');
     }
 
     /**

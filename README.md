@@ -13,6 +13,15 @@ This is website-based reservation system for the gaming lounge at HTU, where stu
 - An admin has a settings panel where he can adjust the games starting, ending time, session duration for each game, the maximum number of reservations for each student per day.
 - All users are able to reset and change password.
 - An admin should be able to ban specific users (prevent them from making reservations).
+
+## Used Technologies
+- PHP/Laravel
+- Javascript
+- AJAX
+- MySQL Database
+- Apache server
+- MVC Archticture
+
 ## Screenshots Examples
 This is a snippets of the websites's GUI
 

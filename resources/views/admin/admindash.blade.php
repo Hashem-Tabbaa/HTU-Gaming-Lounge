@@ -25,7 +25,7 @@
     </div>
 
     <div class="m-auto" style="width: fit-content">
-        <form action="/admin/removeReservation/all" method="POST" class="">
+        <form action="/admin/removeReservation/all" method="POST" class="deleteAll">
             @csrf
             <button type="submit" class="btn btn-danger">Delete <strong>All</strong></button>
         </form>
@@ -67,20 +67,60 @@
                 $(document).ready(function() {
                     $('.form').submit(function(e) {
                         e.preventDefault();
-                        var form = $(this);
-                        $.ajax({
-                            type: form.attr('method'),
-                            url: form.attr('action'),
-                            data: form.serialize(),
-                            success: function(data) {
-                                var id = data;
-                                var row = document.querySelector('#res' + id);
-                                console.log(row);
-                                row.hidden = true;
+                        let form = $(this);
+                        swal({
+                            title: "Caution!",
+                            text: "Are you sure you want to delete this reservation?",
+                            icon: "warning",
+                            buttons: true,
+                        }).then(function(isConfirm) {
+                            if (isConfirm) {
+                                $('#loader').show();
+                                $.ajax({
+                                    type: form.attr('method'),
+                                    url: form.attr('action'),
+                                    data: form.serialize(),
+                                    success: function(data) {
+                                        $('#loader').hide();
+                                        var id = data;
+                                        var row = document.querySelector('#res' + id);
+                                        console.log(row);
+                                        row.hidden = true;
+                                    }
+                                })
+                            }
+                        });
+                    })
+                });
+                $(document).ready(function() {
+                    $('.deleteAll').submit(function(e) {
+                        e.preventDefault();
+                        let form = $(this);
+                        swal({
+                            title: "Caution!",
+                            text: "Are you sure you want to delete ALL reservations?",
+                            icon: "warning",
+                            buttons: true,
+                        }).then(function(isConfirm) {
+                            if (isConfirm) {
+                                $('#loader').show();
+                                $.ajax({
+                                    type: form.attr('method'),
+                                    url: form.attr('action'),
+                                    data: form.serialize(),
+                                    success: function(response) {
+                                        $('#loader').hide();
+                                        var rows = document.querySelectorAll('.record');
+                                        for (var i = 0; i < rows.length; i++) {
+                                            rows[i].hidden = true;
+                                        }
+                                    }
+                                });
                             }
                         })
-                    })
-                })
+                    });
+                });
+
                 document.querySelector('#game').addEventListener('change', function(e) {
                     var game = e.target.value;
                     var rows = document.querySelectorAll('.record');

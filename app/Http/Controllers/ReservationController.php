@@ -37,7 +37,14 @@ class ReservationController extends Controller{
         if(Gate::denies('user') && Gate::denies('admin'))
             return redirect('/login');
 
+        $date = new \DateTime('now', new DateTimeZone('Asia/Amman'));
+        $currentTime = $date->format('H:i');
+
         $time_slot = Date("H:i:s", strtotime(request('time_slot')));
+
+        if($time_slot < $currentTime)
+            return ['error' => 'You cannot reserve a time slot in that has already started'];
+
         $game = request('game');
         $emails = array();
         $emails[0] = auth()->user()->email;
@@ -99,7 +106,16 @@ class ReservationController extends Controller{
         $timeSlots = [];
         $timeSlotsFreq = [];
         $curr = $start;
+
+        $date = new \DateTime('now', new DateTimeZone('Asia/Amman'));
+        $currentTime = $date->format('H:i');
+
         while($curr < $end){
+            if(Date("H:i", $curr) < $currentTime){
+                $curr += 60 * $session_duration;
+                continue;
+            }
+
             $timeSlots[] = Date("H:i", $curr);
             $timeSlotsFreq[Date("H:i", $curr)] = $sessions_capacity;
             $curr += 60 * $session_duration;
@@ -117,6 +133,7 @@ class ReservationController extends Controller{
                 unset($timeSlots[$arrayKey]);
             }
         }
+
 
         return $timeSlots;
     }

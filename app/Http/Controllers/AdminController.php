@@ -53,6 +53,6 @@ class AdminController extends Controller{
                 }
             }
         }
-        return redirect('/admin');
+        return ['success' => true];
     }
 }

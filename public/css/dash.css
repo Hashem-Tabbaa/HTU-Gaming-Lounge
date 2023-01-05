@@ -148,7 +148,9 @@ body .container .card .box .content a:hover,
         height: 125px;
     }
 }
-
+.login-img{
+    height: 130px;
+}
 @media(max-width: 576px) {
     #reservation-title {
         font-size: 1.2rem;
@@ -156,6 +158,10 @@ body .container .card .box .content a:hover,
 
     .main-img {
         height: 75;
+    }
+
+    .login-img{
+        height: 115px;
     }
 }
 
@@ -170,6 +176,9 @@ body .container .card .box .content a:hover,
 
     .main-header {
         flex-direction: column !important;
+    }
+    .login-img{
+        height: 100px;
     }
 }
 #loader {

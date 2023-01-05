@@ -129,22 +129,32 @@
         $(document).ready(function() {
             $('.form-games').submit(function(e) {
                 e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
-                var url = form.attr('action');
-                var method = form.attr('method');
-                $.ajax({
-                    type: method,
-                    url: url,
-                    data: data,
-                    success: function(response) {
-                        document.getElementById('success_' + response).hidden = false;
-                        setTimeout(function() {
-                            document.getElementById('success_' + response).hidden =
-                            true;
-                        }, 2000);
+                let form = $(this);
+                swal({
+                    title: "Caution!",
+                    text: "Updating the settings will remove all the current reservations for this game.",
+                    icon: "warning",
+                    buttons: true,
+                }).then(function(isConfirm) {
+                    if (isConfirm) {
+                        $('#loader').show();
+                        $.ajax({
+                            type: form.attr('method'),
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(response) {
+                                $('#loader').hide();
+                                document.getElementById('success_' + response).hidden =
+                                    false;
+                                setTimeout(function() {
+                                    document.getElementById('success_' +
+                                            response).hidden =
+                                        true;
+                                }, 2000);
+                            }
+                        });
                     }
-                });
+                })
             });
         });
 
@@ -165,28 +175,35 @@
                 });
             });
         });
-
         $(document).ready(function() {
             $('.form-num').submit(function(e) {
                 e.preventDefault();
-                var form = $(this);
-                var data = form.serialize();
-                var url = form.attr('action');
-                var method = form.attr('method');
-                $.ajax({
-                    type: method,
-                    url: url,
-                    data: data,
-                    success: function(response) {
-                        console.log(response);
-                        if (response == 'success') {
-                            document.getElementById('form-num').hidden = false;
-                            setTimeout(function() {
-                                document.getElementById('form-num').hidden = true;
-                            }, 2000);
-                        }
+                let form = $(this);
+                swal({
+                    title: "Caution!",
+                    text: "Updating the settings will remove all current reservations!",
+                    icon: "warning",
+                    buttons: true,
+                }).then(function(isConfirm) {
+                    if (isConfirm) {
+                        $('#loader').show();
+                        $.ajax({
+                            type: form.attr('method'),
+                            url: form.attr('action'),
+                            data: form.serialize(),
+                            success: function(response) {
+                                $('#loader').hide();
+                                if (response == 'success') {
+                                    document.getElementById('form-num').hidden = false;
+                                    setTimeout(function() {
+                                        document.getElementById('form-num')
+                                            .hidden = true;
+                                    }, 2000);
+                                }
+                            }
+                        });
                     }
-                });
+                })
             });
         });
     </script>

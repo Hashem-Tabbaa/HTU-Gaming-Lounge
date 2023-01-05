@@ -3,11 +3,11 @@
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100 p-0 pt-5 pb-5">
-                <span class="login100-form-title p-b-48">
-                    <img src="./images/HTU Logo-250px.png" alt="">
+                <span class="login100-form-title mb-5">
+                    <img src="./images/HTU Logo-250px.png" alt="" class="login-img">
                 </span>
 
-                <span class="login100-form-title mb-5">
+                <span class="login100-form-title mb-3">
                     Login
                 </span>
                 <form class="login100-form validate-form form" method="post" action="login">

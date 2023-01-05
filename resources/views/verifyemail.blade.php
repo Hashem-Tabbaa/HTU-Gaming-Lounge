@@ -4,7 +4,7 @@
         <div class="container-login100">
             <div class="wrap-login100">
                 <span class="login100-form-title p-b-48">
-                    <img src="./images/HTU Logo-250px.png" alt="">
+                    <img src="./images/HTU Logo-250px.png" alt="" class="login-img">
                 </span>
 
                 <span class="login100-form-title p-b-26">

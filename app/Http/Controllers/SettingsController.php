@@ -87,6 +87,8 @@ class SettingsController extends Controller
                 return $e->getMessage();
             }
         }
+        Reservation::truncate();
+
         // return the ajax response
         return 'success';
     }

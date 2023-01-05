@@ -75,7 +75,7 @@ class RegisterController extends Controller
             'confirmpassword.same' => 'The confirm password must be the same as the password',
         ];
 
-        $regex = '/^[a-zA-Z0-9._-]+@htu.edu.jo$/';
+        $regex = '/^[a-zA-Z0-9._-]+@htu.edu.jo$/i';
         return Validator::make($data, [
             'uni_id' => ['required', 'string', 'max:255'],
             'fname' => ['required', 'string', 'max:255'],

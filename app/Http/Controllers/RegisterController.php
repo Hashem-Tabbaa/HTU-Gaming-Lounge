@@ -45,7 +45,7 @@ class RegisterController extends Controller
             $user->uni_id = $request->uni_id;
             $user->fname = $request->fname;
             $user->lname = $request->lname;
-            $user->email = $request->email;
+            $user->email = strtolower($request->email);
             $user->password = bcrypt($request->password);
             $user->otp = $otp;
             $user->save();

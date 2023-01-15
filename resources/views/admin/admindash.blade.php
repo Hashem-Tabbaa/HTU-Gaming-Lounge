@@ -34,6 +34,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                Hello
                 <th scope="col">Students</th>
                 <th scope="col">Game Name</th>
                 <th scope="col">Starts</th>
@@ -45,10 +46,10 @@
                 <tr class="record okGame okTime {{ $reservation->game_name }}" id="res{{ $reservation->id }}">
                     <td>
                         <li>
-                            <ul>{{ $reservation->student1_email }}</ul>
-                            <ul>{{ $reservation->student2_email }}</ul>
-                            <ul>{{ $reservation->student3_email }}</ul>
-                            <ul>{{ $reservation->student4_email }}</ul>
+                            <ul>{{ $reservation->student1_email }}  {{$reservation->student1_name}} </ul>
+                            <ul>{{ $reservation->student2_email }}  {{$reservation->student2_name}} </ul>
+                            <ul>{{ $reservation->student3_email }}  {{$reservation->student3_name}} </ul>
+                            <ul>{{ $reservation->student4_email }}  {{$reservation->student4_name}} </ul>
                         </li>
                     </td>
                     <td>{{ $reservation->game_name }}</td>

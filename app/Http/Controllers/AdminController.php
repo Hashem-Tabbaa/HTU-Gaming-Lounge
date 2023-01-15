@@ -14,8 +14,26 @@ class AdminController extends Controller{
         if(Gate::denies('admin'))
             return redirect('/');
 
-        //sort reservations by date ascending
-        $reservations = Reservation::orderBy('res_time', 'asc')->get();
+        // get all reservations and students first and last name
+        $reservations = Reservation::all();
+        foreach($reservations as $reservation){
+            if($reservation->student1_email != null){
+                $user = User::where('email', $reservation->student1_email)->first();
+                $reservation->student1_name = "( " . $user->fname . ' ' . $user->lname." )";
+            }
+            if($reservation->student2_email != null){
+                $user = User::where('email', $reservation->student2_email)->first();
+                $reservation->student2_name = "( " . $user->fname . ' ' . $user->lname." )";
+            }
+            if($reservation->student3_email != null){
+                $user = User::where('email', $reservation->student3_email)->first();
+                $reservation->student3_name = "( " . $user->fname . ' ' . $user->lname." )";
+            }
+            if($reservation->student4_email != null){
+                $user = User::where('email', $reservation->student4_email)->first();
+                $reservation->student4_name = "( " . $user->fname . ' ' . $user->lname." )";
+            }
+        }
 
         return view('admin.admindash', ['reservations' => $reservations]);
     }

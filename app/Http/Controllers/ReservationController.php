@@ -124,8 +124,12 @@ class ReservationController extends Controller{
         $reservations = Reservation::where('game_name', $game->name)->get();
 
         foreach($reservations as $reservation){
-            $time = Date("H:i", strtotime($reservation->res_time));
-            $timeSlotsFreq[$time]--;
+            try{
+                $time = Date("H:i", strtotime($reservation->res_time));
+                $timeSlotsFreq[$time]--;
+            }catch (\Exception $e){
+                continue;
+            }
         }
         foreach($timeSlotsFreq as $key => $value){
             if($value <= 0){

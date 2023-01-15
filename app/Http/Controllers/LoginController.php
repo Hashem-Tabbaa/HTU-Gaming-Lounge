@@ -34,7 +34,13 @@ class LoginController extends Controller{
             return $validator->errors()->first();
         }
 
-        $credentials = $request->only('email', 'password');
+        $email = strtolower($request->email);
+        $password = $request->password;
+
+        $credentials = [
+            'email' => $email,
+            'password' => $password
+        ];
 
         if(auth()->attempt($credentials)){
             return 'success';

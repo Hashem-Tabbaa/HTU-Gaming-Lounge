@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Reservation;
 use App\Models\Game;
 use Illuminate\Support\Carbon;
+use App\Models\User;
 
 class MyReservationsController extends Controller
 {
@@ -47,22 +48,29 @@ class MyReservationsController extends Controller
 
             if ($current_time >= $start_time && $current_time <= $closing_time)
                 return 'You cannot cancel a reservation that has finished or is currently in progress.';
-            if (
-                $reservation->student1_email == auth()->user()->email
-                || $reservation->student2_email == auth()->user()->email || $reservation->student3_email == auth()->user()->email
-                || $reservation->student4_email == auth()->user()->email
-            )
-                $reservation->delete();
-            else{
+
+
+            if(!$this->isOwner($reservation)){
                 auth()->user()->is_banned = 1;
                 auth()->user()->save();
-                return 'Dont try to cancel other peoples reservations! You are banned. Contact the admin.';
+                return "You cannot cancel others' reservations! You have been banned.";
             }
-            auth()->user()->number_of_reservations -= 1;
-            auth()->user()->save();
+
+            $users_emails = [$reservation->student1_email, $reservation->student2_email, $reservation->student3_email, $reservation->student4_email];
+            $users = User::whereIn('email', $users_emails)->get();
+            foreach($users as $user){
+                $user->number_of_reservations--;
+                $user->save();
+            }
+
+            $reservation->delete();
+
             return $reservation_id;
         } catch (\Exception $e) {
-            return 'Something went wrong. Please try again later.';
+            return $e->getMessage();
         }
+    }
+    function isOwner($reservation){
+        return strtolower($reservation->student1_email) == strtolower(auth()->user()->email) || strtolower($reservation->student2_email) == strtolower(auth()->user()->email) || strtolower($reservation->student3_email) == strtolower(auth()->user()->email) || strtolower($reservation->student4_email) == strtolower(auth()->user()->email);
     }
 }

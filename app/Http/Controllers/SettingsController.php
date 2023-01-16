@@ -88,6 +88,11 @@ class SettingsController extends Controller
             }
         }
         Reservation::truncate();
+        User::all()->each(function ($user) {
+            $user->number_of_reservations = 0;
+            $user->save();
+        });
+        
 
         // return the ajax response
         return 'success';

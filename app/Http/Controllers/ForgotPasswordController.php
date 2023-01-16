@@ -50,13 +50,13 @@ class ForgotPasswordController extends Controller
 
         $token = substr(str_shuffle(str_repeat($pool, 1)), 0, 60);
 
-        User::where('email', $request->email)->update(['password_reset_token' => $token]);
 
         // Send the password reset email to the user
         try {
+            User::where('email', $request->email)->update(['password_reset_token' => $token]);
             Mail::to($request->email)->send(new \App\Mail\ForgotPassword($token, $request->fname, $request->lname));
         } catch (\Exception $e) {
-            return $e;
+            return ['error' => 'Something went wrong. Please try again later.'];
         }
 
         // Redirect back with a success message

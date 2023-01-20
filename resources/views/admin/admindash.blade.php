@@ -1,5 +1,10 @@
 @extends('layouts.layout')
 @section('content')
+
+    <div style="width: fit-content" class="m-auto">
+        Number of Registered students: {{ $numberOfRegisteredUsers}}
+    </div>
+
     {{-- dropdown list to select the game to be shown --}}
 
     <div class="d-flex justify-content-around">
@@ -34,7 +39,6 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                Hello
                 <th scope="col">Students</th>
                 <th scope="col">Game Name</th>
                 <th scope="col">Starts</th>

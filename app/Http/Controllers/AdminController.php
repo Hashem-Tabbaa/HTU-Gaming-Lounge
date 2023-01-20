@@ -14,6 +14,9 @@ class AdminController extends Controller{
         if(Gate::denies('admin'))
             return redirect('/');
 
+
+        $numberOfRegisteredUsers = User::all()->count();
+
         // get all reservations and students first and last name
         $reservations = Reservation::all();
         foreach($reservations as $reservation){
@@ -35,7 +38,7 @@ class AdminController extends Controller{
             }
         }
 
-        return view('admin.admindash', ['reservations' => $reservations]);
+        return view('admin.admindash', ['reservations' => $reservations, 'numberOfRegisteredUsers' => $numberOfRegisteredUsers]);
     }
 
     public function removeReservation(Request $request){

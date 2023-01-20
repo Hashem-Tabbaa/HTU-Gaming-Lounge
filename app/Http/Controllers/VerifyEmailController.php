@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Mail;
 class VerifyEmailController extends Controller{
 
     public function index(){
-        if(Gate::denies('notverified'))
+        if(Gate::denies('notverified') && Gate::denies('admin'))
             return redirect('/arena');
 
         return view('verifyemail');
     }
 
     public function verify(Request $request){
-        if(Gate::denies('notverified'))
+        if(Gate::denies('notverified') && Gate::denies('admin'))
             return redirect('/arena');
 
         $user = auth()->user();
@@ -33,7 +33,7 @@ class VerifyEmailController extends Controller{
 
     public function resendotp(){
 
-        if (Gate::denies('notverified'))
+        if (Gate::denies('notverified') && Gate::denies('admin'))
             return redirect('/arena');
 
         $email = auth()->user()->email;
